@@ -3,5 +3,4 @@ node_js:
   - 0.10.46
   - 4.4.7
 services:
-  - sleep 15
   - mongodb
