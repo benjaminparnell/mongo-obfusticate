@@ -1,4 +1,4 @@
-# cf-obfusticate
+# cf-obfusticate [![Build Status](https://travis-ci.org/benjaminparnell/cf-obfusticate.svg?branch=master)](https://travis-ci.org/benjaminparnell/cf-obfusticate)
 
 Obfusticate sensitive data stored in MongoDB using
 [faker](https://github.com/Marak/Faker.js) or your own functions.
