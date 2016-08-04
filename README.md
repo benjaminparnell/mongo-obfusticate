@@ -1,7 +1,7 @@
 # cf-obfusticate
 
-Obfusticate sensitive data stored in MongoDB, using
-[faker](https://github.com/Marak/Faker.js) or your own functions functions.
+Obfusticate sensitive data stored in MongoDB using
+[faker](https://github.com/Marak/Faker.js) or your own functions.
 
 ## Installation
 
