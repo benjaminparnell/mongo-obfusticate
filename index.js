@@ -9,12 +9,17 @@ function obfusticate (schemas, db, callback) {
   var collections = Object.keys(schemas)
     , emitter = new EventEmitter()
 
+  if (!callback) callback = function () {}
+
   async.series([
     countRecords.bind(null, collections, db, emitter)
-  , run.bind(null, schemas, db, emitter, collections, callback)
+  , run.bind(null, schemas, db, emitter, collections)
   ], function (err, res) {
-    if (err) return callback(err)
-    emitter.emit('done')
+    if (err) {
+      emitter.emit('error', err)
+      return callback(err)
+    }
+    emitter.emit('done', res[1])
     callback(null, res[1])
   })
 
