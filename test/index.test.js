@@ -33,7 +33,7 @@ describe('#obfusticate', function () {
   var db
 
   before(function (done) {
-    var url = 'mongodb://localhost:27017/cf-obfusticate-test-' +
+    var url = 'mongodb://localhost:27017/mongo-obfusticate-test-' +
       crypto.randomBytes(10).toString('hex')
     MongoClient.connect(url, function (err, dbConnection) {
       if (err) return done(err)

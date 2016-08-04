@@ -1,7 +1,7 @@
 {
-  "name": "cf-obfusticate",
-  "version": "0.1.0",
-  "description": "Obfusticate sensitive data",
+  "name": "mongo-obfusticate",
+  "version": "0.0.0",
+  "description": "Obfusticate sensitive data stored in MongoDB",
   "main": "index.js",
   "scripts": {
     "precommit": "npm test",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/benjaminparnell/cf-obfusticate.git"
+    "url": "git+ssh://git@github.com/benjaminparnell/mongo-obfusticate.git"
   },
   "author": "Ben Parnell <benjaminparnell.94@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/benjaminparnell/cf-obfusticate/issues"
+    "url": "https://github.com/benjaminparnell/mongo-obfusticate/issues"
   },
-  "homepage": "https://github.com/benjaminparnell/cf-obfusticate#readme",
+  "homepage": "https://github.com/benjaminparnell/mongo-obfusticate#readme",
   "dependencies": {
     "async": "^2.0.1",
     "faker": "^3.1.0",

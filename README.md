@@ -1,4 +1,4 @@
-# cf-obfusticate [![Build Status](https://travis-ci.org/benjaminparnell/cf-obfusticate.svg?branch=master)](https://travis-ci.org/benjaminparnell/cf-obfusticate)
+# mongo-obfusticate [![Build Status](https://travis-ci.org/benjaminparnell/mongo-obfusticate.svg?branch=master)](https://travis-ci.org/benjaminparnell/mongo-obfusticate)
 
 Obfusticate sensitive data stored in MongoDB using
 [faker](https://github.com/Marak/Faker.js) or your own functions.
@@ -6,14 +6,14 @@ Obfusticate sensitive data stored in MongoDB using
 ## Installation
 
 ```sh
-npm install --save cf-obfusticate
+npm install --save mongo-obfusticate
 ```
 
 ## Usage
 
 ```js
 var MongoClient = require('mongodb').MongoClient
-  , obfusticate = require('cf-obfusticate')
+  , obfusticate = require('mongo-obfusticate')
   , schemas = {
       'user': {
         firstName: 'name.firstName',
