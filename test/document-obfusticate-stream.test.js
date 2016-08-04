@@ -5,7 +5,7 @@ var assert = require('assert')
 
 describe('#DocumentObfusticateStream', function () {
   it('should be an instance of stream.Transform', function () {
-    assert.equal(new DocumentObfusticateStream({}) instanceof stream.Transform, true)
+    assert.ok(new DocumentObfusticateStream({}) instanceof stream.Transform)
   })
 
   it('should add some data to an object piped to it', function (done) {

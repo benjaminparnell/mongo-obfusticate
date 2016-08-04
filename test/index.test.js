@@ -5,7 +5,25 @@ var MongoClient = require('mongodb').MongoClient
   , crypto = require('crypto')
   , generateFakeData = require('../lib/fake-data-generator')
   , extend = require('lodash.assign')
-  , obfusticate = require('../')
+  , obfusticate = require('..')
+  , schemas = {
+      'user': {
+        'firstName': function () {
+          return 'Ben'
+        }
+      , 'lastName': function () {
+          return 'Parnell'
+        }
+      }
+    , 'questionResponse': {
+        'color': function () {
+          return 'yellow'
+        }
+      , 'city': function () {
+          return 'Nottingham'
+        }
+      }
+    }
 
 function createFixtures (fixtureFn, num) {
   return Array.apply(null, Array(num || 2)).map(fixtureFn)
@@ -31,6 +49,8 @@ function createQuestionResponseFixtures (num) {
 
 describe('#obfusticate', function () {
   var db
+    , userCollection
+    , questionResposeCollection
 
   before(function (done) {
     var url = 'mongodb://localhost:27017/mongo-obfusticate-test-' +
@@ -38,32 +58,21 @@ describe('#obfusticate', function () {
     MongoClient.connect(url, function (err, dbConnection) {
       if (err) return done(err)
       db = dbConnection
+      userCollection = db.collection('user')
+      questionResposeCollection = db.collection('questionResponse')
       done()
     })
   })
 
+  afterEach(function (done) {
+    async.parallel([
+      userCollection.remove.bind(userCollection, {})
+    , questionResposeCollection.remove.bind(questionResposeCollection, {})
+    ], done)
+  })
+
   it('should obfusticate data in all collections passed to it', function (done) {
-    var schemas = {
-          'user': {
-            'firstName': function () {
-              return 'Ben'
-            }
-          , 'lastName': function () {
-              return 'Parnell'
-            }
-          }
-        , 'questionResponse': {
-            'color': function () {
-              return 'yellow'
-            }
-          , 'city': function () {
-              return 'Nottingham'
-            }
-          }
-        }
-      , userCollection = db.collection('user')
-      , questionResposeCollection = db.collection('questionResponse')
-      , questionResponseFixtures = createQuestionResponseFixtures(30)
+    var questionResponseFixtures = createQuestionResponseFixtures(30)
       , userFixtures = createUserFixtures(10)
 
     async.parallel([
@@ -84,6 +93,77 @@ describe('#obfusticate', function () {
             eachCb()
           })
         }, done)
+      })
+    })
+  })
+
+  it('should return a counts of all processed items group by collection', function (done) {
+    var questionResponseFixtures = createQuestionResponseFixtures(40)
+      , userFixtures = createUserFixtures(50)
+
+    async.parallel([
+      userCollection.insertMany.bind(userCollection, userFixtures)
+    , questionResposeCollection.insertMany.bind(questionResposeCollection, questionResponseFixtures)
+    ], function (err) {
+      if (err) return done(err)
+      obfusticate(schemas, db, function (err, counts) {
+        if (err) return done(err)
+        assert.deepEqual(counts, {
+          user: 50
+        , questionResponse: 40
+        })
+        done()
+      })
+    })
+  })
+
+  it('should emit an event whenever an insert occurs', function (done) {
+    var userFixtures = createUserFixtures(21)
+
+    userCollection.insertMany(userFixtures, function (err) {
+      if (err) return done(err)
+      var count = 0
+        , emitter = obfusticate(schemas, db, function (err) {
+            if (err) return done(err)
+            assert.equal(count, 21)
+            done()
+          })
+
+      emitter.on('insert', function () {
+        count++
+      })
+    })
+  })
+
+  it('should emit an event counting all existing objects it expects to obfusticate before running', function (done) {
+    var userFixtures = createUserFixtures(21)
+      , questionResponseFixtures = createQuestionResponseFixtures(29)
+      , expectedCounts = {
+          user: 21
+        , questionResponse: 29
+        }
+      , assertRan = false
+      , countsEmittedAt
+
+    async.parallel([
+      userCollection.insertMany.bind(userCollection, userFixtures)
+    , questionResposeCollection.insertMany.bind(questionResposeCollection, questionResponseFixtures)
+    ], function (err) {
+      if (err) return done(err)
+      var emitter = obfusticate(schemas, db, function (err) {
+            if (err) return done(err)
+            assert.ok(assertRan)
+            done()
+          })
+
+      emitter.once('insert', function () {
+        assert.ok(countsEmittedAt < new Date())
+      })
+
+      emitter.on('counts', function (counts) {
+        assert.deepEqual(counts, expectedCounts)
+        assertRan = true
+        countsEmittedAt = new Date()
       })
     })
   })
