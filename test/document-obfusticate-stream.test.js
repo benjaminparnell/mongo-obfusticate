@@ -1,15 +1,20 @@
 var assert = require('assert')
+  , stream = require('stream')
   , streamAssert = require('stream-assert')
-  , addFakeData = require('../lib/add-fake-data')
+  , DocumentObfusticateStream = require('../lib/document-obfusticate-stream')
 
-describe('#addFakeData', function () {
+describe('#DocumentObfusticateStream', function () {
+  it('should be an instance of stream.Transform', function () {
+    assert.equal(new DocumentObfusticateStream({}) instanceof stream.Transform, true)
+  })
+
   it('should add some data to an object piped to it', function (done) {
     var schema = {
           firstName: 'name.firstName'
         , phone: 'phone.phoneNumber'
         , bitcoinWallet: 'finance.bitcoinAddress'
         }
-      , stream = addFakeData(schema)
+      , stream = new DocumentObfusticateStream(schema)
 
     stream
       .pipe(streamAssert.first(function (data) {

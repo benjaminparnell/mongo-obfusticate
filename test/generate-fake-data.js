@@ -1,5 +1,5 @@
 var assert = require('assert')
-  , generateFakeData = require('../lib/generate-fake-data')
+  , generateFakeData = require('../lib/fake-data-generator')
 
 describe('#generateFakeData', function () {
   it('should generate fake data given a schema', function () {

@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient
   , async = require('async')
   , faker = require('faker')
   , crypto = require('crypto')
-  , generateFakeData = require('../lib/generate-fake-data')
+  , generateFakeData = require('../lib/fake-data-generator')
   , extend = require('lodash.assign')
   , obfusticate = require('../')
 
