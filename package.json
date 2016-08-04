@@ -1,6 +1,6 @@
 {
   "name": "mongo-obfusticate",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Obfusticate sensitive data stored in MongoDB",
   "main": "index.js",
   "scripts": {
