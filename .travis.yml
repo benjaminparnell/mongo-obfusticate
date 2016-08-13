@@ -4,3 +4,4 @@ node_js:
   - 4.4.7
 services:
   - mongodb
+after_success: npm run coverage

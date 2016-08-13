@@ -1,4 +1,4 @@
-# mongo-obfusticate [![Build Status](https://travis-ci.org/benjaminparnell/mongo-obfusticate.svg?branch=master)](https://travis-ci.org/benjaminparnell/mongo-obfusticate)
+# mongo-obfusticate [![Build Status](https://travis-ci.org/benjaminparnell/mongo-obfusticate.svg?branch=master)](https://travis-ci.org/benjaminparnell/mongo-obfusticate) [![Coverage Status](https://coveralls.io/repos/github/benjaminparnell/mongo-obfusticate/badge.svg?branch=master)](https://coveralls.io/github/benjaminparnell/mongo-obfusticate?branch=master)
 
 Obfusticate sensitive data stored in MongoDB using
 [faker](https://github.com/Marak/Faker.js) or your own functions.
