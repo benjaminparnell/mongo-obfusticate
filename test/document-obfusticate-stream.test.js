@@ -27,4 +27,27 @@ describe('#DocumentObfusticateStream', function () {
 
     stream.write({ _id: 1 })
   })
+
+  it('should not add the same data to every object piped to it', function (done) {
+    var schema = {
+          firstName: 'name.firstName'
+        , phone: 'phone.phoneNumber'
+        , bitcoinWallet: 'finance.bitcoinAddress'
+        }
+      , stream = new DocumentObfusticateStream(schema)
+      , firstObject
+
+    stream
+      .pipe(streamAssert.first(function (data) {
+        firstObject = data
+      }))
+      .pipe(streamAssert.second(function (data) {
+        assert.notDeepEqual(firstObject, data)
+      }))
+      .pipe(streamAssert.end(done))
+      .end()
+
+    stream.write({})
+    stream.write({})
+  })
 })
