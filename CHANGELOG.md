@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.1.1](https://github.com/benjaminparnell/mongo-obfusticate/tree/v0.1.1) (2016-09-02)
+[Full Changelog](https://github.com/benjaminparnell/mongo-obfusticate/compare/v0.1.0...v0.1.1)
+
+**Implemented enhancements:**
+
+- Add test coverage [\#3](https://github.com/benjaminparnell/mongo-obfusticate/issues/3)
+
+**Fixed bugs:**
+
+- Anything piped through the document stream will get the same fake data [\#4](https://github.com/benjaminparnell/mongo-obfusticate/issues/4)
+
 ## [v0.1.0](https://github.com/benjaminparnell/mongo-obfusticate/tree/v0.1.0) (2016-08-04)
 [Full Changelog](https://github.com/benjaminparnell/mongo-obfusticate/compare/0.1.0...v0.1.0)
 
