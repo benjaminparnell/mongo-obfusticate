@@ -5,12 +5,7 @@ var async = require('async')
   , DocumentObfusticateStream = require('./lib/document-obfusticate-stream')
   , EventEmitter = require('events').EventEmitter
 
-function obfusticate (schemas, db, options, callback) {
-  if (typeof options === 'function') {
-    callback = options
-    options = {}
-  }
-
+function obfusticate (schemas, db, callback) {
   var collections = Object.keys(schemas)
     , emitter = new EventEmitter()
 
@@ -18,7 +13,7 @@ function obfusticate (schemas, db, options, callback) {
 
   async.series([
     countRecords.bind(null, collections, db, emitter)
-  , run.bind(null, schemas, db, emitter, collections, options)
+  , run.bind(null, schemas, db, emitter, collections)
   ], function (err, res) {
     if (err) {
       emitter.emit('error', err)
@@ -46,12 +41,11 @@ function countRecords (collections, db, emitter, callback) {
   })
 }
 
-function run (schemas, db, emitter, collections, options, callback) {
+function run (schemas, db, emitter, collections, callback) {
   async.reduce(collections, {}, function (counts, collection, cb) {
     var updateStream = new MongoStream({ connection: db, collection: collection })
       , findStream = db.collection(collection).find({}).stream()
-      , documentObfusticationStream =
-          new DocumentObfusticateStream(schemas[collection], options.constrainToDataKeys)
+      , documentObfusticationStream = new DocumentObfusticateStream(schemas[collection])
 
     counts[collection] = 0
 
