@@ -32,7 +32,7 @@ MongoClient.connect(dbUrl, function (err, dbConnection) {
 
 ## API
 
-### obfusticate(schemas, dbConnection, options, cb)
+### obfusticate(schemas, dbConnection, cb)
 
 Obfusticates all data in the collections denoted by the keys of the `schemas`
 object (like the example shown above). `dbConnection` is an instance of
