@@ -33,7 +33,8 @@
     "async": "^2.0.1",
     "faker": "^3.1.0",
     "find-and-modify-stream": "^1.0.1",
-    "lodash.assign": "^4.1.0"
+    "lodash.assign": "^4.1.0",
+    "lodash.pick": "^4.4.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.12",
