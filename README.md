@@ -32,11 +32,20 @@ MongoClient.connect(dbUrl, function (err, dbConnection) {
 
 ## API
 
-### obfusticate(schemas, dbConnection, cb)
+### obfusticate(schemas, dbConnection, options, cb)
 
 Obfusticates all data in the collections denoted by the keys of the `schemas`
 object (like the example shown above). `dbConnection` is an instance of
 `MongoClient`.
+
+`options` is an optional parameter and can be omitted. If omitted the default options as described below will be used.
+
+#### options
+
+##### constrainToDataKeys
+**Default:** `false`
+
+If set to `true` then no keys not already on the items will be obfusticated. If `false` then all the keys provided in the `schemas` object will be obfusticated and added to the items in the collection even if they did not previously exist. This only applies for top-level keys and is not enforced for any nested keys even if set to `true`.
 
 ## Credits
 [Ben Parnell](https://github.com/benjaminparnell)
