@@ -168,6 +168,115 @@ describe('#obfusticate', function () {
     })
   })
 
+  describe('options', function () {
+    var extendedSchemas = {
+      'user': {
+        'firstName': function () {
+          return 'Ben'
+        }
+      , 'lastName': function () {
+          return 'Parnell'
+        }
+      , 'occupation': function () {
+          return 'Wizard'
+        }
+      }
+    , 'questionResponse': {
+        'color': function () {
+          return 'yellow'
+        }
+      , 'shape': function () {
+          return 'square'
+        }
+      , 'city': function () {
+          return 'Nottingham'
+        }
+      }
+    }
+
+    describe('constrainToDataKeys', function () {
+      it('should obfusticate schema data in all collections passed to it if not set', function (done) {
+        var questionResponseFixtures = createQuestionResponseFixtures(30)
+          , userFixtures = createUserFixtures(10)
+
+        async.parallel([
+          userCollection.insertMany.bind(userCollection, userFixtures)
+        , questionResposeCollection.insertMany.bind(questionResposeCollection, questionResponseFixtures)
+        ], function (err) {
+          if (err) return done(err)
+          obfusticate(extendedSchemas, db, function (err) {
+            if (err) return done(err)
+            async.each(Object.keys(extendedSchemas), function (collectionName, eachCb) {
+              var collection = db.collection(collectionName)
+              collection.find({}).toArray(function (err, docs) {
+                if (err) return done(err)
+                docs.forEach(function (doc) {
+                  var docWithFakeData = extend({}, generateFakeData(extendedSchemas[collectionName]), doc)
+                  assert.deepEqual(doc, docWithFakeData)
+                })
+                eachCb()
+              })
+            }, done)
+          })
+        })
+      })
+
+      it('should obfusticate schema data in all collections passed to it if false', function (done) {
+        var questionResponseFixtures = createQuestionResponseFixtures(30)
+          , userFixtures = createUserFixtures(10)
+          , options = { constrainToDataKeys: false }
+
+        async.parallel([
+          userCollection.insertMany.bind(userCollection, userFixtures)
+        , questionResposeCollection.insertMany.bind(questionResposeCollection, questionResponseFixtures)
+        ], function (err) {
+          if (err) return done(err)
+          obfusticate(extendedSchemas, db, options, function (err) {
+            if (err) return done(err)
+            async.each(Object.keys(extendedSchemas), function (collectionName, eachCb) {
+              var collection = db.collection(collectionName)
+              collection.find({}).toArray(function (err, docs) {
+                if (err) return done(err)
+                docs.forEach(function (doc) {
+                  var docWithFakeData = extend({}, generateFakeData(extendedSchemas[collectionName]), doc)
+                  assert.deepEqual(doc, docWithFakeData)
+                })
+                eachCb()
+              })
+            }, done)
+          })
+        })
+      })
+
+      it('should obfusticate collection data only in all collections passed to it if true', function (done) {
+        var questionResponseFixtures = createQuestionResponseFixtures(30)
+          , userFixtures = createUserFixtures(10)
+          , options = { constrainToDataKeys: true }
+
+        async.parallel([
+          userCollection.insertMany.bind(userCollection, userFixtures)
+        , questionResposeCollection.insertMany.bind(questionResposeCollection, questionResponseFixtures)
+        ], function (err) {
+          if (err) return done(err)
+          obfusticate(extendedSchemas, db, options, function (err) {
+            if (err) return done(err)
+            async.each(Object.keys(extendedSchemas), function (collectionName, eachCb) {
+              var collection = db.collection(collectionName)
+              collection.find({}).toArray(function (err, docs) {
+                if (err) return done(err)
+                docs.forEach(function (doc) {
+                  var docWithFakeData = extend({}, generateFakeData(schemas[collectionName]), doc)
+                  assert.deepEqual(doc, docWithFakeData)
+                })
+                eachCb()
+              })
+            }, done)
+          })
+        })
+      })
+    })
+  })
+
   after(function (done) {
     db.dropDatabase(done)
   })
