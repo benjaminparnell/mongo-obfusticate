@@ -38,5 +38,8 @@ Obfusticates all data in the collections denoted by the keys of the `schemas`
 object (like the example shown above). `dbConnection` is an instance of
 `MongoClient`.
 
+Any top-level keys that are on the schema but are not already on the items in 
+the collection will be ignored.
+
 ## Credits
 [Ben Parnell](https://github.com/benjaminparnell)

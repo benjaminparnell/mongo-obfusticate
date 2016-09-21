@@ -168,6 +168,40 @@ describe('#obfusticate', function () {
     })
   })
 
+  it('should obfusticate collection data only in all collections passed to it', function (done) {
+    var questionResponseFixtures = createQuestionResponseFixtures(30)
+      , userFixtures = createUserFixtures(10)
+      , extendedSchemas =
+          { user: extend({}, schemas.user
+            , { occupation: function () { return 'Wizard' }
+              })
+          , questionResponse: extend({}, schemas.questionResponse
+            , { shape: function () { return 'square' }
+              })
+          }
+
+    async.parallel([
+      userCollection.insertMany.bind(userCollection, userFixtures)
+    , questionResposeCollection.insertMany.bind(questionResposeCollection, questionResponseFixtures)
+    ], function (err) {
+      if (err) return done(err)
+      obfusticate(extendedSchemas, db, function (err) {
+        if (err) return done(err)
+        async.each(Object.keys(extendedSchemas), function (collectionName, eachCb) {
+          var collection = db.collection(collectionName)
+          collection.find({}).toArray(function (err, docs) {
+            if (err) return done(err)
+            docs.forEach(function (doc) {
+              var docWithFakeData = extend({}, generateFakeData(schemas[collectionName]), doc)
+              assert.deepEqual(doc, docWithFakeData)
+            })
+            eachCb()
+          })
+        }, done)
+      })
+    })
+  })
+
   after(function (done) {
     db.dropDatabase(done)
   })
