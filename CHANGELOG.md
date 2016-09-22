@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.1.2](https://github.com/benjaminparnell/mongo-obfusticate/tree/v0.1.2) (2016-09-21)
+[Full Changelog](https://github.com/benjaminparnell/mongo-obfusticate/compare/v0.1.1...v0.1.2)
+
+**Closed issues:**
+
+- Don't create new properties if people can't spell. Stop tyops. [\#6](https://github.com/benjaminparnell/mongo-obfusticate/issues/6)
+
+**Merged pull requests:**
+
+- Add constrain to data keys option addressing \#6 [\#7](https://github.com/benjaminparnell/mongo-obfusticate/pull/7) ([maael](https://github.com/maael))
+
 ## [v0.1.1](https://github.com/benjaminparnell/mongo-obfusticate/tree/v0.1.1) (2016-09-02)
 [Full Changelog](https://github.com/benjaminparnell/mongo-obfusticate/compare/v0.1.0...v0.1.1)
 
